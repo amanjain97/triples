@@ -1,3 +1,5 @@
+var starttime = moment();
+ 
 var heightWindow = $(window).height();
 var rowCounter = 1;
 var imgArr = ["1.png", "2.png", "3.png", "4.png","1.png", "2.png", "3.png", "4.png","1.png", "2.png", "3.png", "4.png" ]
@@ -19,8 +21,12 @@ function shuffle(o) {
     };
     return o;
 }
+Meteor.call('removeAllPosts')
+
 shuffle(imgArr);
 function assignimage () {
+  
+
   var i;
   // console.log(" this is a loop");
   for (var i =0 ; i<12 ; i++) {
@@ -32,10 +38,9 @@ function assignimage () {
     });
   }
 }
+console.log("gdjdjdjdj  ")
+
 assignimage();
-// $('c'+rowCounter).click(function(){
-//     $("p").css("color", "red");
-// });
 Template.screen1.helpers({
     count: function () {
       return Session.get('gameLevel');
@@ -68,7 +73,7 @@ var clickcount = 0;
 var imgcomp = [];
 var imgidcomp = [];
 Template.screen1.events({
-    'click': function(e) {
+    'click .col-xs-4': function(e) {
        var card = e.target.id;
        // console.log("hello  " ,Game.findOne({'index' : card}).imageurl)
        var game = Game.findOne({'index' : card});
@@ -85,18 +90,7 @@ Template.screen1.events({
        clickcount++;
        
        if(clickcount % 3 == 0){
-          // alert("3 clicks.....ek min ruk ke jaana ")
-          // for (var i = 0; i<3 ; i++) {
-          //             console.log(imgcomp[i])
-          // }
           if (imgcomp[0]==imgcomp[1] && imgcomp[0]==imgcomp[2] && imgcomp[1]==imgcomp[2] ) {
-            // console.log("tiles matched situation")
-
-            // console.log("game obj initial" ,Game.findOne({'index' : imgidcomp[0]}))
-
-            // $('#'+imgidcomp[0]).onclick = 'none';
-            // $('#'+imgidcomp[1]).onclick = 'none';
-            // $('#'+imgidcomp[2]).onclick = 'none';
             for (var i = 0; i < 3; i++) {
               var xyz=Game.findOne({'index' : imgidcomp[i]});
               console.log("game obj START" ,xyz);
@@ -113,6 +107,14 @@ Template.screen1.events({
             console.log("matched")
             imgcomp = [];
             imgidcomp = [];
+            // console.log(Game.find({'matched': false}).count())
+            if(Game.find({'matched': false}).count() == 0){
+              var endtime = moment();
+              console.log("game completed in "+Math.floor(endtime.diff(starttime)/1000)+ " seconds")
+
+            }else{
+              console.log("abhi game baki hai ")
+            }
           }
           else{//problem is if i click 11,12,13 and they dont match and now if i click 11,21,22 then 11will disappear in 1 sec as been set // the match thing is a little bit weird
             console.log("in else part")
@@ -122,7 +124,7 @@ Template.screen1.events({
               $('#'+q[2]).addClass('imghidden');
               imgcomp = [];
               imgidcomp = [];
-             }, 500, imgidcomp);
+             }, 120, imgidcomp);
             // setTimeout(function(){ 
             // $('#'+imgidcomp[0]).addClass('imghidden');
             // $('#'+imgidcomp[1]).addClass('imghidden');
@@ -143,77 +145,14 @@ Template.screen1.events({
       // return Game.findOne({'index': card}).imageurl
        // Game.update that selected should be true 
       // $('#'+card).removeClass('pad_none').addClass('bg2');
-    }
+    },
+   'click [data-action="showAlert"]': function(event, template) {
+    IonPopup.alert({
+      title: 'An Alert',
+      template: 'This is an alert!',
+      okText: 'Got It.'
+    });
+  }
+
   });
-
-// Template.screen2.helpers({
-//     count: function () {
-//       return Session.get('gameLevel');
-//     },
-//     heightWin: function() {
-//       var p=heightWindow/4;
-//       return p+"px";
-//     },
-//     loopCount: function(count){
-//       var countArr = [];
-//       for (var i=0; i<count; i++){
-//         countArr.push({});
-//       }
-//       return countArr;
-//     }
-//   });
-
-// Template.screen2.events({
-//     'click': function() {
-//       console.log("hello");
-//       // myf();
-//     }
-//   });
-
-// Template.screen3.helpers({
-//     count: function () {
-//       return Session.get('gameLevel');
-//     },
-//     heightWin: function() {
-//       var p=heightWindow/4;
-//       return p+"px";
-//     },
-//     loopCount: function(count){
-//       var countArr = [];
-//       for (var i=0; i<count; i++){
-//         countArr.push({});
-//       }
-//       return countArr;
-//     }
-//   });
-
-// Template.screen3.events({
-//     'click': function() {
-//       console.log("hello");
-//       // myf();
-//     }
-//   });
-
-// Template.screen4.helpers({
-//     count: function () {
-//       return Session.get('gameLevel');
-//     },
-//     heightWin: function() {
-//       var p=heightWindow/4;
-//       return p+"px";
-//     },
-//     loopCount: function(count){
-//       var countArr = [];
-//       for (var i=0; i<count; i++){
-//         countArr.push({});
-//       }
-//       return countArr;
-//     }
-//   });
-
-// Template.screen4.events({
-//     'click': function() {
-//       console.log("hello");
-//       // myf();
-//     }
-//   });
+// alert(moment())
