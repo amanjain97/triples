@@ -30,7 +30,6 @@ function shuffle(o) {
 }
 Meteor.call('removeAllPosts')
 shuffle(imgArr);
- console.log("img array is  ",imgArr)
 
 function assignimage () {
   var i;

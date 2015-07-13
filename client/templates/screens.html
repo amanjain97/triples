@@ -1,6 +1,37 @@
-
-
 <template name="screen1">
+	{{#each loopCount 4}}
+		<div class="row" style="min-height:{{heightWin}}">
+		  {{#each loopCount 3}}
+		  <div id="{{counter}}" class="col-xs-4 pad_none imghidden" data-col="1" style="background-color:{{randomColor}};min-height:{{heightWin}};background-image:url('{{imageUrl}}');background-repeat:no-repeat;background-position:center;"></div>{{/each}}</div>
+	{{/each}}
+</template>
+
+
+<template name="screen2">
+	{{#each loopCount 4}}
+		<div class="row" style="min-height:{{heightWin}}">
+		  {{#each loopCount 3}}
+		  <div id="{{counter}}" class="col-xs-4 pad_none imghidden" data-col="1" style="background-color:{{randomColor}};min-height:{{heightWin}};background-image:url('{{imageUrl}}');background-repeat:no-repeat;background-position:center;"></div>{{/each}}</div>
+	{{/each}}
+</template>
+
+
+<template name="screen3">
+	{{#each loopCount 4}}
+		<div class="row" style="min-height:{{heightWin}}">
+		  {{#each loopCount 3}}
+		  <div id="{{counter}}" class="col-xs-4 pad_none imghidden" data-col="1" style="background-color:{{randomColor}};min-height:{{heightWin}};background-image:url('{{imageUrl}}');background-repeat:no-repeat;background-position:center;"></div>{{/each}}</div>
+	{{/each}}
+</template>
+
+
+<template name="screen4">
+	{{#each loopCount 4}}
+		<div class="row" style="min-height:{{heightWin}}">
+		  {{#each loopCount 3}}
+		  <div id="{{counter}}" class="col-xs-4 pad_none imghidden" data-col="1" style="background-color:{{randomColor}};min-height:{{heightWin}};background-image:url('{{imageUrl}}');background-repeat:no-repeat;background-position:center;"></div>{{/each}}</div>
+	{{/each}}
+</template>
 
 
 
@@ -14,37 +45,3 @@
 
 	 	{{/ionContent}}
 	{{/ionView}}{{/ionBody}} -->
-			{{#each loopCount 4}}
-				<div class="row" style="min-height:{{heightWin}}">
-				  {{#each loopCount 3}}
-				  <div id="{{counter}}" class="col-xs-4 pad_none imghidden" data-col="1" style="background-color:{{randomColor}};min-height:{{heightWin}};background-image:url('{{imageUrl}}');background-repeat:no-repeat;background-position:center;"></div>{{/each}}</div>
-			{{/each}}
-
-</template>
-
-
-<template name="screen2">
-			{{#each loopCount 4}}
-				<div class="row" style="min-height:{{heightWin}}">
-				  {{#each loopCount 3}}
-				  <div id="{{counter}}" class="col-xs-4 pad_none imghidden" data-col="1" style="background-color:{{randomColor}};min-height:{{heightWin}};background-image:url('{{imageUrl}}');background-repeat:no-repeat;background-position:center;"></div>{{/each}}</div>
-			{{/each}}
-</template>
-
-
-<template name="screen3">
-			{{#each loopCount 4}}
-				<div class="row" style="min-height:{{heightWin}}">
-				  {{#each loopCount 3}}
-				  <div id="{{counter}}" class="col-xs-4 pad_none imghidden" data-col="1" style="background-color:{{randomColor}};min-height:{{heightWin}};background-image:url('{{imageUrl}}');background-repeat:no-repeat;background-position:center;"></div>{{/each}}</div>
-			{{/each}}
-</template>
-
-
-<template name="screen4">
-			{{#each loopCount 4}}
-				<div class="row" style="min-height:{{heightWin}}">
-				  {{#each loopCount 3}}
-				  <div id="{{counter}}" class="col-xs-4 pad_none imghidden" data-col="1" style="background-color:{{randomColor}};min-height:{{heightWin}};background-image:url('{{imageUrl}}');background-repeat:no-repeat;background-position:center;"></div>{{/each}}</div>
-			{{/each}}
-</template>
