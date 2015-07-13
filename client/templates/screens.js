@@ -77,6 +77,12 @@ Template.screen1.events({
        var card = e.target.id;
        // console.log("hello  " ,Game.findOne({'index' : card}).imageurl)
        var game = Game.findOne({'index' : card});
+       if(game.selected)
+        return;
+      else {
+        Game.update(game._id, {$set: {"selected": true}});
+      }
+      // Game.update(game._id, {$set: {"selected": true}});
        var gameimageurl = game.imageurl;
 
        // $('#'+card).css("background-image", "url('+ gameobj.imageurl +')")
@@ -85,6 +91,7 @@ Template.screen1.events({
        // Session.set("")
        
        if (game.matched==false) {
+
        imgcomp.push(gameimageurl);
        imgidcomp.push(card);
        clickcount++;
@@ -98,12 +105,6 @@ Template.screen1.events({
               console.log("game obj initial" ,Game.findOne({'index' : imgidcomp[i]}));
             }
             
-
-          // Game.update(imgidcomp[1], {$set: {matched: true}});
-          // Game.update(imgidcomp[2], {$set: {matched: true}});
-            // $('#'+imgidcomp[0]).off('click');
-            // $('#'+imgidcomp[1]).off('click');
-            // $('#'+imgidcomp[2]).off('click');
             console.log("matched")
             imgcomp = [];
             imgidcomp = [];
@@ -117,27 +118,24 @@ Template.screen1.events({
             }
           }
           else{//problem is if i click 11,12,13 and they dont match and now if i click 11,21,22 then 11will disappear in 1 sec as been set // the match thing is a little bit weird
-            console.log("in else part")
+                          // var xyz=Game.findOne({'index' : imgidcomp[i]});
+
+            // Game.update(xyz, {$set: {"selected": false}});
+            
+            for (var i = 0; i < 3; i++) {
+              var xyz=Game.findOne({'index' : imgidcomp[i]});
+              // console.log("game obj START" ,xyz);
+              Game.update(xyz._id, {$set: {"selected": false}});
+              // console.log("game obj initial" ,Game.findOne({'index' : imgidcomp[i]}));
+            }
             setTimeout(function(q){ 
               $('#'+q[0]).addClass('imghidden');
               $('#'+q[1]).addClass('imghidden');
               $('#'+q[2]).addClass('imghidden');
+
               imgcomp = [];
               imgidcomp = [];
              }, 120, imgidcomp);
-            // setTimeout(function(){ 
-            // $('#'+imgidcomp[0]).addClass('imghidden');
-            // $('#'+imgidcomp[1]).addClass('imghidden');
-            // $('#'+imgidcomp[2]).addClass('imghidden');
-            //   imgcomp = [];
-            //   imgidcomp = [];
-            //  }, 1000);
-            // $('#'+imgidcomp[0]).addClass('imghidden');
-            // $('#'+imgidcomp[1]).addClass('imghidden');
-            // $('#'+imgidcomp[2]).addClass('imghidden');
-            // imgcomp = [];
-            // imgidcomp = [];
-
 
           }
        }
