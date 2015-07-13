@@ -65,11 +65,3 @@ html, body {
   padding: 20px;
   background: white;
 }
-.imageShow{
-	background-image: url("/images/Setting-icon.png");
-	background-repeat: no-repeat;
-	background-position: center;
-} 
-.imageHidden{
-		background-image: url("/images/Setting-icon.png") none;
-}

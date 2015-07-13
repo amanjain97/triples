@@ -1,8 +1,8 @@
 var starttime = moment();
- 
+Session.set('gamelevel',4)
 var heightWindow = $(window).height();
 var rowCounter = 1;
-var imgArr = ["1.png", "2.png", "3.png", "4.png","1.png", "2.png", "3.png", "4.png","1.png", "2.png", "3.png", "4.png" ]
+var imgArr = ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png" ,"1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png" ,"1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png" ,"1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png" ]
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
@@ -22,14 +22,11 @@ function shuffle(o) {
     return o;
 }
 Meteor.call('removeAllPosts')
-
 shuffle(imgArr);
 function assignimage () {
-  
-
   var i;
-  // console.log(" this is a loop");
-  for (var i =0 ; i<12 ; i++) {
+  var gameLevel=Session.get('gamelevel')
+  for (var i =0 ; i<gameLevel*12 ; i++) {
     Game.insert({
       'index' : 'c'+(i+1),
       'imageurl': imgArr[i],
@@ -38,8 +35,6 @@ function assignimage () {
     });
   }
 }
-console.log("gdjdjdjdj  ")
-
 assignimage();
 Template.screen1.helpers({
     count: function () {
@@ -48,14 +43,12 @@ Template.screen1.helpers({
     'randomColor': function() {
       return getRandomColor();
     },
-        'imageUrl': function() {
-          console.log("hello bhai dekhna idhar" , rowCounter-1);
+    'imageUrl': function() {
       return "/images/"+imgArr[rowCounter-2];
     },
     counter : function () {
       return 'c'+ rowCounter++;
     },
-
     heightWin: function() {
       var p=heightWindow/4;
       return p+"px";
@@ -66,7 +59,85 @@ Template.screen1.helpers({
         countArr.push({});
       }
       return countArr;
+    }
+
+  });
+Template.screen2.helpers({
+    count: function () {
+      return Session.get('gameLevel');
     },
+    'randomColor': function() {
+      return getRandomColor();
+    },
+    'imageUrl': function() {
+      return "/images/"+imgArr[rowCounter-2];
+    },
+    counter : function () {
+      return 'c'+ rowCounter++;
+    },
+    heightWin: function() {
+      var p=heightWindow/4;
+      return p+"px";
+    },
+    loopCount: function(count){
+      var countArr = [];
+      for (var i=0; i<count; i++){
+        countArr.push({});
+      }
+      return countArr;
+    }
+
+  });
+Template.screen3.helpers({
+    count: function () {
+      return Session.get('gameLevel');
+    },
+    'randomColor': function() {
+      return getRandomColor();
+    },
+    'imageUrl': function() {
+      return "/images/"+imgArr[rowCounter-2];
+    },
+    counter : function () {
+      return 'c'+ rowCounter++;
+    },
+    heightWin: function() {
+      var p=heightWindow/4;
+      return p+"px";
+    },
+    loopCount: function(count){
+      var countArr = [];
+      for (var i=0; i<count; i++){
+        countArr.push({});
+      }
+      return countArr;
+    }
+
+  });
+Template.screen4.helpers({
+    count: function () {
+      return Session.get('gameLevel');
+    },
+    'randomColor': function() {
+      return getRandomColor();
+    },
+    'imageUrl': function() {
+      return "/images/"+imgArr[rowCounter-2];
+    },
+    counter : function () {
+      return 'c'+ rowCounter++;
+    },
+    heightWin: function() {
+      var p=heightWindow/4;
+      return p+"px";
+    },
+    loopCount: function(count){
+      var countArr = [];
+      for (var i=0; i<count; i++){
+        countArr.push({});
+      }
+      return countArr;
+    }
 
   });
 var clickcount = 0;
@@ -75,27 +146,18 @@ var imgidcomp = [];
 Template.screen1.events({
     'click .col-xs-4': function(e) {
        var card = e.target.id;
-       // console.log("hello  " ,Game.findOne({'index' : card}).imageurl)
        var game = Game.findOne({'index' : card});
        if(game.selected)
         return;
-      else {
+       else {
         Game.update(game._id, {$set: {"selected": true}});
-      }
-      // Game.update(game._id, {$set: {"selected": true}});
+       }
        var gameimageurl = game.imageurl;
-
-       // $('#'+card).css("background-image", "url('+ gameobj.imageurl +')")
-       // console.log($('#'+card).css("background-color", "red"))
        $('#'+card).removeClass('imghidden');
-       // Session.set("")
-       
        if (game.matched==false) {
-
        imgcomp.push(gameimageurl);
        imgidcomp.push(card);
        clickcount++;
-       
        if(clickcount % 3 == 0){
           if (imgcomp[0]==imgcomp[1] && imgcomp[0]==imgcomp[2] && imgcomp[1]==imgcomp[2] ) {
             for (var i = 0; i < 3; i++) {
@@ -104,53 +166,176 @@ Template.screen1.events({
               Game.update(xyz._id, {$set: {"matched": true}});
               console.log("game obj initial" ,Game.findOne({'index' : imgidcomp[i]}));
             }
-            
-            console.log("matched")
             imgcomp = [];
             imgidcomp = [];
-            // console.log(Game.find({'matched': false}).count())
             if(Game.find({'matched': false}).count() == 0){
               var endtime = moment();
-              console.log("game completed in "+Math.floor(endtime.diff(starttime)/1000)+ " seconds")
-
+              alert("Time taken "+Math.floor(endtime.diff(starttime)/1000)+ " seconds")
             }else{
               console.log("abhi game baki hai ")
             }
           }
-          else{//problem is if i click 11,12,13 and they dont match and now if i click 11,21,22 then 11will disappear in 1 sec as been set // the match thing is a little bit weird
-                          // var xyz=Game.findOne({'index' : imgidcomp[i]});
-
-            // Game.update(xyz, {$set: {"selected": false}});
-            
+          else{
             for (var i = 0; i < 3; i++) {
               var xyz=Game.findOne({'index' : imgidcomp[i]});
-              // console.log("game obj START" ,xyz);
               Game.update(xyz._id, {$set: {"selected": false}});
-              // console.log("game obj initial" ,Game.findOne({'index' : imgidcomp[i]}));
             }
             setTimeout(function(q){ 
               $('#'+q[0]).addClass('imghidden');
               $('#'+q[1]).addClass('imghidden');
               $('#'+q[2]).addClass('imghidden');
-
               imgcomp = [];
               imgidcomp = [];
              }, 120, imgidcomp);
-
           }
        }
      }
-      // return Game.findOne({'index': card}).imageurl
-       // Game.update that selected should be true 
-      // $('#'+card).removeClass('pad_none').addClass('bg2');
-    },
-   'click [data-action="showAlert"]': function(event, template) {
-    IonPopup.alert({
-      title: 'An Alert',
-      template: 'This is an alert!',
-      okText: 'Got It.'
-    });
-  }
-
+    }
   });
-// alert(moment())
+Template.screen2.events({
+    'click .col-xs-4': function(e) {
+       var card = e.target.id;
+       var game = Game.findOne({'index' : card});
+       if(game.selected)
+        return;
+       else {
+        Game.update(game._id, {$set: {"selected": true}});
+       }
+       var gameimageurl = game.imageurl;
+       $('#'+card).removeClass('imghidden');
+       if (game.matched==false) {
+       imgcomp.push(gameimageurl);
+       imgidcomp.push(card);
+       clickcount++;
+       if(clickcount % 3 == 0){
+          if (imgcomp[0]==imgcomp[1] && imgcomp[0]==imgcomp[2] && imgcomp[1]==imgcomp[2] ) {
+            for (var i = 0; i < 3; i++) {
+              var xyz=Game.findOne({'index' : imgidcomp[i]});
+              console.log("game obj START" ,xyz);
+              Game.update(xyz._id, {$set: {"matched": true}});
+              console.log("game obj initial" ,Game.findOne({'index' : imgidcomp[i]}));
+            }
+            imgcomp = [];
+            imgidcomp = [];
+            if(Game.find({'matched': false}).count() == 0){
+              var endtime = moment();
+              alert("Time taken "+Math.floor(endtime.diff(starttime)/1000)+ " seconds")
+            }else{
+              console.log("abhi game baki hai ")
+            }
+          }
+          else{
+            for (var i = 0; i < 3; i++) {
+              var xyz=Game.findOne({'index' : imgidcomp[i]});
+              Game.update(xyz._id, {$set: {"selected": false}});
+            }
+            setTimeout(function(q){ 
+              $('#'+q[0]).addClass('imghidden');
+              $('#'+q[1]).addClass('imghidden');
+              $('#'+q[2]).addClass('imghidden');
+              imgcomp = [];
+              imgidcomp = [];
+             }, 120, imgidcomp);
+          }
+       }
+     }
+    }
+  });
+Template.screen3.events({
+    'click .col-xs-4': function(e) {
+       var card = e.target.id;
+       var game = Game.findOne({'index' : card});
+       if(game.selected)
+        return;
+       else {
+        Game.update(game._id, {$set: {"selected": true}});
+       }
+       var gameimageurl = game.imageurl;
+       $('#'+card).removeClass('imghidden');
+       if (game.matched==false) {
+       imgcomp.push(gameimageurl);
+       imgidcomp.push(card);
+       clickcount++;
+       if(clickcount % 3 == 0){
+          if (imgcomp[0]==imgcomp[1] && imgcomp[0]==imgcomp[2] && imgcomp[1]==imgcomp[2] ) {
+            for (var i = 0; i < 3; i++) {
+              var xyz=Game.findOne({'index' : imgidcomp[i]});
+              console.log("game obj START" ,xyz);
+              Game.update(xyz._id, {$set: {"matched": true}});
+              console.log("game obj initial" ,Game.findOne({'index' : imgidcomp[i]}));
+            }
+            imgcomp = [];
+            imgidcomp = [];
+            if(Game.find({'matched': false}).count() == 0){
+              var endtime = moment();
+              alert("Time taken "+Math.floor(endtime.diff(starttime)/1000)+ " seconds")
+            }else{
+              console.log("abhi game baki hai ")
+            }
+          }
+          else{
+            for (var i = 0; i < 3; i++) {
+              var xyz=Game.findOne({'index' : imgidcomp[i]});
+              Game.update(xyz._id, {$set: {"selected": false}});
+            }
+            setTimeout(function(q){ 
+              $('#'+q[0]).addClass('imghidden');
+              $('#'+q[1]).addClass('imghidden');
+              $('#'+q[2]).addClass('imghidden');
+              imgcomp = [];
+              imgidcomp = [];
+             }, 120, imgidcomp);
+          }
+       }
+     }
+    }
+  });
+Template.screen4.events({
+    'click .col-xs-4': function(e) {
+       var card = e.target.id;
+       var game = Game.findOne({'index' : card});
+       if(game.selected)
+        return;
+       else {
+        Game.update(game._id, {$set: {"selected": true}});
+       }
+       var gameimageurl = game.imageurl;
+       $('#'+card).removeClass('imghidden');
+       if (game.matched==false) {
+       imgcomp.push(gameimageurl);
+       imgidcomp.push(card);
+       clickcount++;
+       if(clickcount % 3 == 0){
+          if (imgcomp[0]==imgcomp[1] && imgcomp[0]==imgcomp[2] && imgcomp[1]==imgcomp[2] ) {
+            for (var i = 0; i < 3; i++) {
+              var xyz=Game.findOne({'index' : imgidcomp[i]});
+              console.log("game obj START" ,xyz);
+              Game.update(xyz._id, {$set: {"matched": true}});
+              console.log("game obj initial" ,Game.findOne({'index' : imgidcomp[i]}));
+            }
+            imgcomp = [];
+            imgidcomp = [];
+            if(Game.find({'matched': false}).count() == 0){
+              var endtime = moment();
+              alert("Time taken "+Math.floor(endtime.diff(starttime)/1000)+ " seconds")
+            }else{
+              console.log("abhi game baki hai ")
+            }
+          }
+          else{
+            for (var i = 0; i < 3; i++) {
+              var xyz=Game.findOne({'index' : imgidcomp[i]});
+              Game.update(xyz._id, {$set: {"selected": false}});
+            }
+            setTimeout(function(q){ 
+              $('#'+q[0]).addClass('imghidden');
+              $('#'+q[1]).addClass('imghidden');
+              $('#'+q[2]).addClass('imghidden');
+              imgcomp = [];
+              imgidcomp = [];
+             }, 120, imgidcomp);
+          }
+       }
+     }
+    }
+  });
