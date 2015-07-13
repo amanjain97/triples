@@ -20,6 +20,12 @@ Settings
 
 
 <template name="main">
+  <div class="ionHeaderBar">
+    <div class="{{classes}}">
+      {{> UI.contentBlock}}
+    </div>
+  </div>
+
   <div class="wrapper">
     {{>swipe Swiper=Swiper}}
   </div>
