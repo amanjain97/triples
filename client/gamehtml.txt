@@ -31,8 +31,6 @@
 </template>
 
 <template name="header">
-<div align='center'>Triples
-<button type="button" class="resetbutton">reset</button>
+<div align="center">Triples</div>
 
-</div>
 </template>

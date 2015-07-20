@@ -1,15 +1,28 @@
-var starttime = moment();
-Session.set('gamelevel',4)
-var heightWindow = $(window).height();
-var rowCounter = 1;
-var imgArr = [];
-for (var i = 0; i < Session.get('gamelevel')*12/3; i++) {
-    imgArr.push((i+1)+".png");
-    imgArr.push((i+1)+".png");
-    imgArr.push((i+1)+".png");
-};
-console.log("img array is  ",imgArr)
-// var imgArr = ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png" ,"1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png" , "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png"];
+  var imgArr = [];
+  for (var i = 0; i < Session.get('gamelevel')*12/3; i++) {
+      imgArr.push((i+1)+".png");
+      imgArr.push((i+1)+".png");
+      imgArr.push((i+1)+".png");
+  }
+function startgame () {
+  // body...
+  console.log("startgame function is ok1")
+  var starttime = moment();
+  var heightWindow = $(window).height();
+  Session.set('gamelevel',2)
+  console.log("startgame function is ok2")
+
+  var rowCounter = 1;
+
+  console.log("img array in startgame function is ", imgArr)
+  Meteor.call('removeAllPosts')
+  shuffle(imgArr);
+  // assignimage();
+  // console.log(assignimage)
+  var clickcount = 0;
+  var imgcomp = [];
+  var imgidcomp = [];
+}
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
@@ -29,29 +42,10 @@ function shuffle(o) {
     return o;
 }
 
-
-
 function assignimage () {
-  Meteor.call('removeAllPosts')
-  shuffle(imgArr);
   var i;
   var gameLevel=Session.get('gamelevel')
-  for (var i =0 ; i<gameLevel*12 ; i++) {
-    Game.insert({
-      'index' : 'c'+(i+1),
-      'imageurl': imgArr[i],
-      'selected': false,
-      'matched': false
-    });
-  }
-}
-function resetgame () {
-  Meteor.call('removeAllPosts')
-  shuffle(imgArr);
-  console.log(imgArr)
-  var i;
-  var gameLevel=Session.get('gamelevel')
-  console.log("gamelevel is ", Session.get('gamelevel'))
+  console.log
   for (var i =0 ; i<gameLevel*12 ; i++) {
     Game.insert({
       'index' : 'c'+(i+1),
@@ -62,7 +56,11 @@ function resetgame () {
   }
 }
 
+startgame();
 assignimage();
+// console.log("img array is  ",imgArr)
+// var imgArr = ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png" ,"1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png" , "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png"];
+
 
 Template.screen1.helpers({
     count: function () {
@@ -168,9 +166,7 @@ Template.screen4.helpers({
     }
 
   });
-var clickcount = 0;
-var imgcomp = [];
-var imgidcomp = [];
+
 
 function screenClickEvent(card) {
       var game = Game.findOne({'index' : card});
@@ -364,10 +360,3 @@ Template.screen4.events({
 //      }
 //     }
 //   });
-Template.header.events({
-  'click .resetbutton': function () {
-    console.log("click on resetbutton is working")
-
-    resetgame();
-  }
-});

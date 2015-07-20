@@ -9,30 +9,7 @@ function makeSwipe() {
 }
 makeSwipe();
 
-// function shuffle(o) {
-//     var j, x, i;
-//     for (i = o.length - 1; i >= 0; i--) {
-//         j = Math.floor(Math.random() * i);
-//         x = o[i];
-//         o[i] = o[j];
-//         o[j] = x;
-//     };
-//     return o;
-// }
-// function resetgame () {
-//   Meteor.call('removeAllPosts')
-//   shuffle(imgArr);
-//   var i;
-//   var gameLevel=Session.get('gamelevel')
-//   for (var i =0 ; i<gameLevel*12 ; i++) {
-//     Game.insert({
-//       'index' : 'c'+(i+1),
-//       'imageurl': imgArr[i],
-//       'selected': false,
-//       'matched': false
-//     });
-//   }
-// }
+
 Template.swiper.helpers({
   Swiper: function() {
     return Swiper;
@@ -61,11 +38,3 @@ Template.swiper.rendered = function() {
     };
   });
 };
-
-// Template.header.events({
-//   'click .resetbutton': function () {
-//     console.log("click on resetbutton is working")
-
-//     resetgame();
-//   }
-// });
