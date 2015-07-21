@@ -8,31 +8,20 @@
 
 
 <template name="main">
-<!--   <div class="ionHeaderBar">
-    <div class="{{classes}}">
-      {{> UI.contentBlock}}
-    </div>
-  </div> -->
-
-{{> header}}
-{{> swiper}}
+  {{> header}}
+  {{> swiper}}
   <div class="wrapper">
     {{>swipe Swiper=Swiper}}
   </div>
-
 </template>
 
 <template name="swiper">
-
   <div class="wrapper">
     {{>swipe Swiper=Swiper}}
   </div>
-
 </template>
 
 <template name="header">
-<div align='center'>Triples
-<button type="button" class="resetbutton">reset</button>
-
-</div>
+  <div align='center'>Triples</div>
+  <button type="button" class="resetbutton">Reset</button>
 </template>

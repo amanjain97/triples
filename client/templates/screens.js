@@ -1,14 +1,3 @@
-var starttime = moment();
-Session.set('gamelevel',4)
-var heightWindow = $(window).height();
-var rowCounter = 1;
-var imgArr = [];
-for (var i = 0; i < Session.get('gamelevel')*12/3; i++) {
-    imgArr.push((i+1)+".png");
-    imgArr.push((i+1)+".png");
-    imgArr.push((i+1)+".png");
-};
-console.log("img array is  ",imgArr)
 // var imgArr = ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png" ,"1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png" , "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png"];
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
@@ -30,9 +19,24 @@ function shuffle(o) {
 }
 
 
+var imgArr = [];
+var starttime;
+var heightWindow = $(window).height();
+var rowCounter;
+
 
 function assignimage () {
   Meteor.call('removeAllPosts')
+  starttime = moment();
+  imgArr = [];
+  Session.set('gamelevel',1)
+  rowCounter = 1;
+  
+  for (var i = 0; i < Session.get('gamelevel')*12/3; i++) {
+      imgArr.push((i+1)+".png");
+      imgArr.push((i+1)+".png");
+      imgArr.push((i+1)+".png");
+  };
   shuffle(imgArr);
   var i;
   var gameLevel=Session.get('gamelevel')
@@ -44,22 +48,7 @@ function assignimage () {
       'matched': false
     });
   }
-}
-function resetgame () {
-  Meteor.call('removeAllPosts')
-  shuffle(imgArr);
-  console.log(imgArr)
-  var i;
-  var gameLevel=Session.get('gamelevel')
-  console.log("gamelevel is ", Session.get('gamelevel'))
-  for (var i =0 ; i<gameLevel*12 ; i++) {
-    Game.insert({
-      'index' : 'c'+(i+1),
-      'imageurl': imgArr[i],
-      'selected': false,
-      'matched': false
-    });
-  }
+  console.log("img array is  ",imgArr)
 }
 
 assignimage();
@@ -212,9 +201,7 @@ function screenClickEvent(card) {
           if (imgcomp[0]==imgcomp[1] && imgcomp[0]==imgcomp[2] && imgcomp[1]==imgcomp[2] ) {
             for (var i = 0; i < 3; i++) {
               var xyz=Game.findOne({'index' : imgidcomp[i]});
-              console.log("game obj START" ,xyz);
               Game.update(xyz._id, {$set: {"matched": true}});
-              console.log("game obj initial" ,Game.findOne({'index' : imgidcomp[i]}));
             }
             imgcomp = [];
             imgidcomp = [];
@@ -266,108 +253,11 @@ Template.screen4.events({
        screenClickEvent(card);
     }
   });
-// Template.screen3.events({
-//     'click .col-xs-4': function(e) {
-//        var card = e.target.id;
-//        var game = Game.findOne({'index' : card});
-//        if(game.selected)
-//         return;
-//        else {
-//         Game.update(game._id, {$set: {"selected": true}});
-//        }
-//        var gameimageurl = game.imageurl;
-//        $('#'+card).removeClass('imghidden');
-//        if (game.matched==false) {
-//        imgcomp.push(gameimageurl);
-//        imgidcomp.push(card);
-//        clickcount++;
-//        if(clickcount % 3 == 0){
-//           if (imgcomp[0]==imgcomp[1] && imgcomp[0]==imgcomp[2] && imgcomp[1]==imgcomp[2] ) {
-//             for (var i = 0; i < 3; i++) {
-//               var xyz=Game.findOne({'index' : imgidcomp[i]});
-//               console.log("game obj START" ,xyz);
-//               Game.update(xyz._id, {$set: {"matched": true}});
-//               console.log("game obj initial" ,Game.findOne({'index' : imgidcomp[i]}));
-//             }
-//             imgcomp = [];
-//             imgidcomp = [];
-//             if(Game.find({'matched': false}).count() == 0){
-//               var endtime = moment();
-//               alert("Time taken "+Math.floor(endtime.diff(starttime)/1000)+ " seconds")
-//             }else{
-//               console.log("abhi game baki hai ")
-//             }
-//           }
-//           else{
-//             for (var i = 0; i < 3; i++) {
-//               var xyz=Game.findOne({'index' : imgidcomp[i]});
-//               Game.update(xyz._id, {$set: {"selected": false}});
-//             }
-//             setTimeout(function(q){ 
-//               $('#'+q[0]).addClass('imghidden');
-//               $('#'+q[1]).addClass('imghidden');
-//               $('#'+q[2]).addClass('imghidden');
-//               imgcomp = [];
-//               imgidcomp = [];
-//              }, 200, imgidcomp);
-//           }
-//        }
-//      }
-//     }
-//   });
-// Template.screen4.events({
-//     'click .col-xs-4': function(e) {
-//        var card = e.target.id;
-//        var game = Game.findOne({'index' : card});
-//        if(game.selected)
-//         return;
-//        else {
-//         Game.update(game._id, {$set: {"selected": true}});
-//        }
-//        var gameimageurl = game.imageurl;
-//        $('#'+card).removeClass('imghidden');
-//        if (game.matched==false) {
-//        imgcomp.push(gameimageurl);
-//        imgidcomp.push(card);
-//        clickcount++;
-//        if(clickcount % 3 == 0){
-//           if (imgcomp[0]==imgcomp[1] && imgcomp[0]==imgcomp[2] && imgcomp[1]==imgcomp[2] ) {
-//             for (var i = 0; i < 3; i++) {
-//               var xyz=Game.findOne({'index' : imgidcomp[i]});
-//               console.log("game obj START" ,xyz);
-//               Game.update(xyz._id, {$set: {"matched": true}});
-//               console.log("game obj initial" ,Game.findOne({'index' : imgidcomp[i]}));
-//             }
-//             imgcomp = [];
-//             imgidcomp = [];
-//             if(Game.find({'matched': false}).count() == 0){
-//               var endtime = moment();
-//               alert("Time taken "+Math.floor(endtime.diff(starttime)/1000)+ " seconds")
-//             }else{
-//               console.log("abhi game baki hai ")
-//             }
-//           }
-//           else{
-//             for (var i = 0; i < 3; i++) {
-//               var xyz=Game.findOne({'index' : imgidcomp[i]});
-//               Game.update(xyz._id, {$set: {"selected": false}});
-//             }
-//             setTimeout(function(q){ 
-//               $('#'+q[0]).addClass('imghidden');
-//               $('#'+q[1]).addClass('imghidden');
-//               $('#'+q[2]).addClass('imghidden');
-//               imgcomp = [];
-//               imgidcomp = [];
-//              }, 200, imgidcomp);
-//           }
-//        }
-//      }
-//     }
-//   });
+
 Template.header.events({
   'click .resetbutton': function () {
     console.log("click on resetbutton is working")
+    assignimage();
 
-    resetgame();
   }
 });
