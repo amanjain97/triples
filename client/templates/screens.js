@@ -1,4 +1,3 @@
-// var imgArr = ["1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png" ,"1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png" , "1.png", "2.png", "3.png", "4.png", "5.png", "6.png", "7.png", "8.png", "9.png", "10.png", "11.png", "12.png", "13.png", "14.png", "15.png", "16.png"];
 function getRandomColor() {
     var letters = '0123456789ABCDEF'.split('');
     var color = '#';
@@ -19,7 +18,6 @@ function shuffle(o) {
 }
 
 
-var imgArr = [];
 var starttime;
 var heightWindow = $(window).height();
 var rowCounter;
@@ -28,7 +26,7 @@ var rowCounter;
 function assignimage () {
   Meteor.call('removeAllPosts')
   starttime = moment();
-  imgArr = [];
+  var imgArr = [];
   Session.set('gamelevel',1)
   rowCounter = 1;
   
@@ -49,6 +47,9 @@ function assignimage () {
     });
   }
   console.log("img array is  ",imgArr)
+  Session.set('images', imgArr);
+  Session.set('lastUpdate', new Date() );
+
 }
 
 assignimage();
@@ -61,7 +62,7 @@ Template.screen1.helpers({
       return getRandomColor();
     },
     'imageUrl': function() {
-      return "/images/"+imgArr[rowCounter-2];
+      return "/images/"+Session.get('images')[rowCounter-2];
     },
     counter : function () {
       return 'c'+ rowCounter++;
@@ -76,6 +77,9 @@ Template.screen1.helpers({
         countArr.push({});
       }
       return countArr;
+    },
+    lastUpdate: function () {
+      return Session.get('lastUpdate');
     }
 
   });
@@ -87,7 +91,7 @@ Template.screen2.helpers({
       return getRandomColor();
     },
     'imageUrl': function() {
-      return "/images/"+imgArr[rowCounter-2];
+      return "/images/"+Session.get('images')[rowCounter-2];
     },
     counter : function () {
       return 'c'+ rowCounter++;
@@ -113,7 +117,7 @@ Template.screen3.helpers({
       return getRandomColor();
     },
     'imageUrl': function() {
-      return "/images/"+imgArr[rowCounter-2];
+      return "/images/"+Session.get('images')[rowCounter-2];
     },
     counter : function () {
       return 'c'+ rowCounter++;
@@ -139,7 +143,7 @@ Template.screen4.helpers({
       return getRandomColor();
     },
     'imageUrl': function() {
-      return "/images/"+imgArr[rowCounter-2];
+      return "/images/"+Session.get('images')[rowCounter-2];
     },
     counter : function () {
       return 'c'+ rowCounter++;
@@ -258,6 +262,6 @@ Template.header.events({
   'click .resetbutton': function () {
     console.log("click on resetbutton is working")
     assignimage();
-
+    
   }
 });
