@@ -16,7 +16,14 @@ function shuffle(o) {
     };
     return o;
 }
-
+// Template.levels.events({
+//   'click .level1' : function() {
+//     Session.set('gamelevel' , 1)
+//   },
+//   'click .level2' : function() {
+//     Session.set('gamelevel' , 2)
+//   }
+// });
 
 var starttime;
 var heightWindow = $(window).height();
@@ -49,7 +56,13 @@ function assignimage () {
   console.log("img array is  ",imgArr)
   Session.set('images', imgArr);
   Session.set('lastUpdate', new Date() );
+  for (var i = 1; i <= Session.get('gamelevel')*12; i++) {
 
+    $('#c'+i).addClass('imghidden');
+  };
+    // $('#c'+2).addClass('imghidden');
+
+  // console.log(" here jquery thing in assignimage func is ",$("#c"+1).css(''))
 }
 
 assignimage();
@@ -211,7 +224,14 @@ function screenClickEvent(card) {
             imgidcomp = [];
             if(Game.find({'matched': false}).count() == 0){
               var endtime = moment();
-              alert("Time taken "+Math.floor(endtime.diff(starttime)/1000)+ " seconds")
+              var seconds = Math.floor(endtime.diff(starttime)/1000);
+              var hrs = Math.floor(seconds/3600);
+              seconds=seconds%3600;
+              var min = Math.floor(seconds/60);
+              seconds=seconds%60;
+              var sec = seconds;
+              alert("time taken is "+hrs+" hours "+min+" minutes "+sec+" seconds. ")
+              console.log(seconds)
             }else{
               console.log("not matched ");
             }
