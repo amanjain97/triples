@@ -29,22 +29,26 @@ var starttime;
 var heightWindow = $(window).height();
 var rowCounter;
 
-
-function assignimage () {
+// Tracker.autorun(function () {
+// Session.set('gamelevel',level)
+// });
+var imgArr = [];
+function assignimage (level) {
   Meteor.call('removeAllPosts')
+
   starttime = moment();
-  var imgArr = [];
-  Session.set('gamelevel',1)
+  imgArr = [];
   rowCounter = 1;
-  
   for (var i = 0; i < Session.get('gamelevel')*12/3; i++) {
       imgArr.push((i+1)+".png");
       imgArr.push((i+1)+".png");
       imgArr.push((i+1)+".png");
   };
   shuffle(imgArr);
+  console.log("image arr after shuffle is ",imgArr)
   var i;
   var gameLevel=Session.get('gamelevel')
+  console.log("gamelevel in assisgnimage is", gameLevel)
   for (var i =0 ; i<gameLevel*12 ; i++) {
     Game.insert({
       'index' : 'c'+(i+1),
@@ -53,7 +57,7 @@ function assignimage () {
       'matched': false
     });
   }
-  console.log("img array is  ",imgArr)
+  // console.log("img array is  ",imgArr)
   Session.set('images', imgArr);
   Session.set('lastUpdate', new Date() );
   for (var i = 1; i <= Session.get('gamelevel')*12; i++) {
@@ -64,8 +68,12 @@ function assignimage () {
 
   // console.log(" here jquery thing in assignimage func is ",$("#c"+1).css(''))
 }
-
-assignimage();
+Tracker.autorun(function () {
+  console.log(Session.get('gamelevel'))
+  assignimage(Session.get('gamelevel'));
+}); 
+Session.set('gamelevel', 4)
+//assignimage();
 
 Template.screen1.helpers({
     count: function () {
@@ -93,6 +101,10 @@ Template.screen1.helpers({
     },
     lastUpdate: function () {
       return Session.get('lastUpdate');
+    },
+    imgarr: function() {
+      console.log("img arr in helper is ",imgArr)
+      return imgArr;
     }
 
   });
@@ -119,6 +131,9 @@ Template.screen2.helpers({
         countArr.push({});
       }
       return countArr;
+    },
+    lastUpdate: function () {
+      return Session.get('lastUpdate');
     }
 
   });
@@ -181,7 +196,7 @@ var imgidcomp = [];
 function screenClickEvent(card) {
       var game = Game.findOne({'index' : card});
       if(game.selected){
-        console.log('its already selted so return  - '+   JSON.stringify(game));
+        // console.log('its already selted so return  - '+   JSON.stringify(game));
         return;
       }
        else {
@@ -193,12 +208,12 @@ function screenClickEvent(card) {
        imgcomp.push(gameimageurl);
        imgidcomp.push(card);
        clickcount++;
-               console.log(" - - - -"+clickcount );
+               // console.log(" - - - -"+clickcount );
 
        if(clickcount == 2  ){
-        console.log(clickcount + " clikes 2 and - " + imgcomp[0] + " : " + imgcomp[1]);
+        // console.log(clickcount + " clikes 2 and - " + imgcomp[0] + " : " + imgcomp[1]);
           if (imgcomp[0]!=imgcomp[1]) {
-            console.log(" clikes 2 and not matched ")
+            // console.log(" clikes 2 and not matched ")
             for (var i = 0; i < 2; i++) {
               var xyz=Game.findOne({'index' : imgidcomp[i]});
               Game.update(xyz._id, {$set: {"selected": false}});
@@ -231,9 +246,9 @@ function screenClickEvent(card) {
               seconds=seconds%60;
               var sec = seconds;
               alert("time taken is "+hrs+" hours "+min+" minutes "+sec+" seconds. ")
-              console.log(seconds)
+              // console.log(seconds)
             }else{
-              console.log("not matched ");
+              // console.log("not matched ");
             }
           }
           else{
@@ -283,5 +298,29 @@ Template.header.events({
     console.log("click on resetbutton is working")
     assignimage();
     
+  },
+  'click .level1': function() {
+    Session.set('gamelevel', 1)
+
+    // console.log("game level is set as 3")
+  },
+  'click .level2': function() {
+    Session.set('gamelevel', 2)
+    // console.log("game level is set as 1")
+  },
+  'click .level3': function() {
+    Session.set('gamelevel', 3)
+    // Meteor.render(Template.screen2);
+    // Meteor.render(Template.screen3);
+
+    // console.log("game level is set as 1")
+  },
+  'click .level4': function() {
+    Session.set('gamelevel', 4)
+    // console.log("game level is set as 1")
   }
 });
+// $('#somediv').html(Meteor.render(Template.screen1));
+// $('#somediv').html(Meteor.render(Template.screen2));
+// $('#somediv').html(Meteor.render(Template.screen3));
+// $('#somediv').html(Meteor.render(Template.screen4));

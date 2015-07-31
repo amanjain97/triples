@@ -10,9 +10,9 @@
 <template name="main">
   {{> header}}
   {{> swiper}}
-  <div class="wrapper">
+ <!--  <div class="wrapper">
     {{>swipe Swiper=Swiper}}
-  </div>
+  </div> -->
 </template>
 
 <template name="swiper">
@@ -23,6 +23,11 @@
 
 <template name="header">
     <!-- {{> levels}} -->
-  <div align='center'>Triples<button type="button" class="resetbutton">Reset</button></div>
+  <div align='center'>Triples<button type="button" class="resetbutton">Reset</button>
+  <button type="button" class="level1">level1</button>
+  <button type="button" class="level2">level2</button>
+  <button type="button" class="level3">level3</button>
+  <button type="button" class="level4">level4</button>
+  </div>
   
 </template>

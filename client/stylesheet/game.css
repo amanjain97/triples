@@ -68,3 +68,15 @@ html, body {
 .resetbutton {
     float: right;
 }
+.level1 {
+    float: left;
+}
+.level2 {
+    float: left;
+}
+.level3 {
+    float: left;
+}
+.level4 {
+    float: left;
+}

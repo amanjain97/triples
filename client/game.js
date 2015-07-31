@@ -1,5 +1,5 @@
 function makeSwipe() {
-  console.log("in ****  " + Session.get('gamelevel'));
+  // console.log("in ****  " + Session.get('gamelevel'));
   var array = [];
   for (var i = 1;i <= Session.get('gamelevel'); i++) {
     array.push('screen'+i)
@@ -42,7 +42,7 @@ Template.swiper.helpers({
 Template.swiper.rendered = function() {
   Swiper.setInitialPage('screen1');
   Tracker.autorun(function() {
-    console.log("Session.get('gamelevel') - " + Session.get('gamelevel'));
+    console.log("gamelevel in swipe is  " + Session.get('gamelevel'));
     if(Session.get('gamelevel')==1){
       return Swiper.leftRight(null, null);
     }
